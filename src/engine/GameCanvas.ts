@@ -1,17 +1,15 @@
-import { ScreenDimension } from './models/ScreenDimension';
+import { CanvasDimension } from './config';
 
 export default class GameCanvas {
 
     private canvas: HTMLCanvasElement;
     private context: CanvasRenderingContext2D | null;
-    private screenDimension: ScreenDimension;
 
-    constructor(screenDimension: ScreenDimension) {
-        this.screenDimension = screenDimension;
+    constructor() {
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
-        this.canvas.width = this.screenDimension.width;
-        this.canvas.height = this.screenDimension.height;
+        this.canvas.width = CanvasDimension.width;
+        this.canvas.height = CanvasDimension.height;
         document.body.appendChild(this.canvas);
     }
 
@@ -23,5 +21,9 @@ export default class GameCanvas {
         if (!this.context)
             throw new Error('');
         return this.context;
+    }
+
+    public clear() {
+        this.getContext().clearRect(0, 0, CanvasDimension.width, CanvasDimension.height);
     }
 }

@@ -1,28 +1,20 @@
-import { ScreenDimension } from '../models/ScreenDimension';
-import { ScreenPosition } from '../utils';
+import { Strings } from '../Strings';
+import { Colors } from '../enums/Colors';
+import { TextType } from '../enums/TextType';
+
+import { PaintBrush } from '../utils';
 
 export default class StartScreen {
+    
+    private PaintBrush: PaintBrush;
 
-    private canvasContext: CanvasRenderingContext2D;
-    private screenDimension: ScreenDimension;
-    private screenPosition: ScreenPosition;
-
-    constructor(canvasContext: CanvasRenderingContext2D, screenDimension: ScreenDimension) {
-        this.canvasContext = canvasContext;
-        this.screenDimension = screenDimension;
-        this.screenPosition = new ScreenPosition(this.screenDimension);
+    constructor(readonly canvasContext: CanvasRenderingContext2D) {
+        this.PaintBrush = new PaintBrush(this.canvasContext);
     }
 
     show() {
-        this.canvasContext.fillStyle = 'black';
-        this.canvasContext.fillRect(0, 0, this.screenDimension.width, this.screenDimension.height);
-
-        this.canvasContext.fillStyle = 'white';
-        this.canvasContext.font = '30px Arial';
-        this.canvasContext.fillText('Snake Game', this.screenPosition.getX(-100), this.screenPosition.getY(-50));
-        this.canvasContext.font = '20px Arial';
-        this.canvasContext.fillText('Pressione qualquer tecla para começar', this.screenPosition.getX(-190), this.screenPosition.getY(50));
+        this.PaintBrush.fillBackground(Colors.black);
+        this.PaintBrush.drawText(Strings.title, Colors.white, TextType.title, { x: -100, y: -50 });
+        this.PaintBrush.drawText(Strings.subTitle, Colors.white, TextType.subTitle, { x: -190, y: 50 });
     }
-
-
 }
