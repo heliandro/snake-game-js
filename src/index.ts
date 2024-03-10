@@ -1,1 +1,4 @@
-console.log('hello game!');
+import Engine from './engine/Engine';
+
+const engine = new Engine();
+engine.init();
