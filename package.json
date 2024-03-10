@@ -1,13 +1,13 @@
 {
-  "name": "snake",
-  "version": "1.0.0",
+  "name": "snake-game",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --open",
     "build": "webpack"
   },  
-  "keywords": ["game", "snake-game", "typescript", "javascript", "pure"],
+  "keywords": ["game", "snake-game", "typescript", "javascript", "no-3rd-engine"],
   "author": "heliandro lavor",
   "license": "ISC",
   "devDependencies": {
