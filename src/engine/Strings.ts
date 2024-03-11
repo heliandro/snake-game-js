@@ -1,4 +1,4 @@
 export const Strings = {
-    title: 'Snake Game',
-    subTitle: 'Pressione qualquer tecla para começar'
+    title: 'Jogo da cobrinha',
+    subTitle: 'Pressione a tecla [ENTER] para começar'
 }
