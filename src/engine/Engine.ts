@@ -18,6 +18,7 @@ export default class Engine {
     private applesEaten: number = 0;
     private gameAnimationIntervalRef: any;
     private isGameRunning = true;
+    private isGameStarted = false;
 
     constructor() {
         this.gameCanvas = new GameCanvas();
@@ -40,15 +41,16 @@ export default class Engine {
 
     init() {
         this.startScreen.show();
-        document.addEventListener('keydown', (event) => this.startGameEvent(event));
+        document.addEventListener('keydown', this.startGameEvent.bind(this));
     }
 
     startGameEvent(event: KeyboardEvent): void {
-        if (event.key.includes('Enter')) {
+        if (event.key === 'Enter' && !this.isGameStarted) {
             this.snake.init();
             this.gameUI.showUI();
-            document.addEventListener('keydown', (event) => this.initControls(event));
+            document.addEventListener('keydown', this.initControls.bind(this));
             this.startAnimationFrame();
+            this.isGameStarted = true;
         }
     }
 
@@ -58,8 +60,6 @@ export default class Engine {
     }
 
     initControls(event: KeyboardEvent) {
-        document.removeEventListener('keydown', (event) => this.startGameEvent(event));
-
         switch (event.key) {
             case 'ArrowUp':
                 this.snake.changeDirection(Direction.Up);
@@ -73,12 +73,15 @@ export default class Engine {
             case 'ArrowRight':
                 this.snake.changeDirection(Direction.Right);
                 break;
+            case 'Enter':
+                break;
             case ' ':
                 this.isGameRunning = !this.isGameRunning;
                 if (this.isGameRunning === false)
                     clearInterval(this.gameAnimationIntervalRef);
                 else
                     this.startAnimationFrame();
+                break;
         }
     }
 
