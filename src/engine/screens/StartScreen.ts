@@ -1,5 +1,5 @@
 import { Strings } from '../Strings';
-import { Colors } from '../enums/Colors';
+import { Color } from '../enums/Color';
 import { TextType } from '../enums/TextType';
 
 import { PaintBrush } from '../utils';
@@ -13,8 +13,8 @@ export default class StartScreen {
     }
 
     show() {
-        this.PaintBrush.fillBackground(Colors.black);
-        this.PaintBrush.drawText(Strings.title, Colors.white, TextType.title, { x: -100, y: -50 });
-        this.PaintBrush.drawText(Strings.subTitle, Colors.white, TextType.subTitle, { x: -190, y: 50 });
+        this.PaintBrush.fillBackground(Color.black);
+        this.PaintBrush.drawText(Strings.title, Color.white, TextType.title, { x: -100, y: -50 });
+        this.PaintBrush.drawText(Strings.subTitle, Color.white, TextType.subTitle, { x: -190, y: 50 });
     }
 }
