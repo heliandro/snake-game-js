@@ -1,4 +1,11 @@
 export const Strings = {
-    title: 'Jogo da cobrinha',
-    subTitle: 'Pressione a tecla [ENTER] para começar'
+    startScreen: {
+        title: 'Snake Game',
+        subTitle: 'Press the key [ENTER] to start!',
+    },
+    ui: {
+        items: 'Apple:',
+        score: 'Score:',
+        speed: 'Speed:'
+    }
 }

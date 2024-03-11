@@ -18,21 +18,6 @@ export class ScreenPosition {
     }
 }
 
-export class ScreenPositionInGridSize {
-
-    public static getX(pos: number, centerAlign: boolean = true): number {
-        if (!centerAlign)
-            return pos * CanvasGridSize;
-        return CanvasDimension.width / 2 + pos * CanvasGridSize;
-    }
-
-    public static getY(pos: number, centerAlign: boolean = true) {
-        if (!centerAlign)
-            return pos * CanvasGridSize;
-        return CanvasDimension.height / 2 + pos * CanvasGridSize;
-    }
-}
-
 export class FillOptions {
     x: number;
     y: number;
@@ -46,7 +31,6 @@ export class FillOptions {
         this.height = height;
     }
 }
-
 
 export class PaintBrush {
 
@@ -72,5 +56,23 @@ export class PaintBrush {
     public drawPixel(fillOptions: FillOptions, color: Color = Color.white) {
         this.context.fillStyle = color;
         this.context.fillRect(fillOptions.x, fillOptions.y, fillOptions.width, fillOptions.height);
+    }
+}
+
+export function convertSpeedForUI(speed: number) {
+    if (speed >= 300) {
+        return 1
+    } else if (speed >= 250) {
+        return 2
+    } else if (speed >= 200) {
+        return 3
+    } else if (speed >= 150) {
+        return 4
+    } else if (speed >= 100) {
+        return 5
+    } else if (speed >= 50) {
+        return 6
+    } else if (speed >= 0) {
+        return 7
     }
 }
