@@ -12,10 +12,10 @@ export default class Snake {
 
     private snake: { x: number, y: number }[] = [];
     private snakeSize: number = 3;
-    private direction: Direction = Direction.Left;
+    private newDirection: Direction = Direction.Left;
+    private currentDirection: Direction = Direction.Left;
     private firstPosition = true;
-    private snakeSpeed = 300; // millisseconds
-
+    private snakeSpeed = 300;
     private paintBrush: PaintBrush;
 
     constructor(readonly context: CanvasRenderingContext2D) {
@@ -25,6 +25,7 @@ export default class Snake {
     public init() {
         this.initializeSnake();
         this.draw();
+        this.firstPosition = false;
         this.drawAndMove();
     }
 
@@ -35,7 +36,6 @@ export default class Snake {
     }
 
     private draw() {
-
         for (let i = 0; i < this.snake.length; i++) {
             let fillOptions: FillOptions = {
                 x: ScreenPosition.getX(this.snake[i].x, this.firstPosition),
@@ -69,35 +69,75 @@ export default class Snake {
     }
 
     public changeDirection(direction: Direction) {
-        this.direction = direction;
+        this.newDirection = direction;
     }
 
     public drawAndMove() {
-        this.firstPosition = false;
-
         let extractedHead = this.getHead();
 
-        switch (this.direction) {
+        switch (this.newDirection) {
             case Direction.Up:
-                extractedHead.y -= 1 * CanvasGridSize;
+                extractedHead = this.checkAndMoveToUp(extractedHead);
                 break;
             case Direction.Down:
-                extractedHead.y += 1 * CanvasGridSize;
+                extractedHead = this.checkAndMoveToDown(extractedHead);
                 break;
             case Direction.Left:
-                extractedHead.x -= 1 * CanvasGridSize;
+                extractedHead = this.checkAndMoveToLeft(extractedHead);
                 break;
             case Direction.Right:
-                extractedHead.x += 1 * CanvasGridSize;
+                extractedHead = this.checkAndMoveToRight(extractedHead);
                 break;
         }
 
         this.snake.unshift(extractedHead);
         this.snake.pop();
-
         this.checkWallColission();
-
         this.draw();
+    }
+
+    private checkAndMoveToUp(extractedHead: SnakePart) {
+        if (this.currentDirection === Direction.Down) {
+            extractedHead.y += 1 * CanvasGridSize;
+            this.newDirection = Direction.Down;
+        } else {
+            extractedHead.y -= 1 * CanvasGridSize;
+            this.currentDirection = Direction.Up
+        }
+        return extractedHead;
+    }
+
+    private checkAndMoveToDown(extractedHead: SnakePart) {
+        if (this.currentDirection === Direction.Up) {
+            extractedHead.y -= 1 * CanvasGridSize;
+            this.newDirection = Direction.Up;
+        } else {
+            extractedHead.y += 1 * CanvasGridSize;
+            this.currentDirection = Direction.Down
+        }
+        return extractedHead;
+    }
+
+    private checkAndMoveToLeft(extractedHead: SnakePart) {
+        if (this.currentDirection === Direction.Right) {
+            extractedHead.x += 1 * CanvasGridSize;
+            this.newDirection = Direction.Right;
+        } else {
+            extractedHead.x -= 1 * CanvasGridSize;
+            this.currentDirection = Direction.Left
+        }
+        return extractedHead;
+    }
+
+    private checkAndMoveToRight(extractedHead: SnakePart) {
+        if (this.currentDirection === Direction.Left) {
+            extractedHead.x -= 1 * CanvasGridSize;
+            this.newDirection = Direction.Left;
+        } else {
+            extractedHead.x += 1 * CanvasGridSize;
+            this.currentDirection = Direction.Right
+        }
+        return extractedHead;
     }
 
     public checkWallColission() {
@@ -115,8 +155,8 @@ export default class Snake {
     }
 
     public increaseSnakeSpeed() {
-        if (this.snakeSpeed <= 10) 
+        if (this.snakeSpeed <= 25)
             return;
-        this.snakeSpeed -= 30;
+        this.snakeSpeed -= 25;
     }
 }

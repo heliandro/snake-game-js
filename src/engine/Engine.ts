@@ -11,17 +11,11 @@ export default class Engine {
 
     private gameCanvas: GameCanvas;
     private paintBrush: PaintBrush;
-    
     private startScreen: StartScreen;
-
     private snake: Snake;
-    
     private gameItems: Items;
-
-    private applesEaten: number = 0;
-
     private gameUI: GameUI;
-
+    private applesEaten: number = 0;
     private gameAnimationIntervalRef: any;
     private isGameRunning = true;
 
@@ -41,7 +35,7 @@ export default class Engine {
 
         // game ui
         this.gameUI = new GameUI();
-        this.gameUI.updateUI(this.applesEaten, 0, this.snake.getSnakeSpeed());
+        this.gameUI.updateUI(this.applesEaten, this.snake.getSnakeSpeed());
     }
 
     init() {
@@ -51,8 +45,8 @@ export default class Engine {
 
     startGameEvent(event: KeyboardEvent): void {
         if (event.key.includes('Enter')) {
-            console.log('key down: ' + event.key);
             this.snake.init();
+            this.gameUI.showUI();
             document.addEventListener('keydown', (event) => this.initControls(event));
             this.startAnimationFrame();
         }
@@ -66,7 +60,6 @@ export default class Engine {
     initControls(event: KeyboardEvent) {
         document.removeEventListener('keydown', (event) => this.startGameEvent(event));
 
-        console.log(event.key)
         switch (event.key) {
             case 'ArrowUp':
                 this.snake.changeDirection(Direction.Up);
@@ -90,7 +83,6 @@ export default class Engine {
     }
 
     public startAnimationFrame() {
-        // this.paintBrush.clearScreen();
 
         this.gameAnimationIntervalRef = setInterval(() => {
             this.paintBrush.clearScreen();
@@ -105,7 +97,7 @@ export default class Engine {
                 this.startAnimationFrame();
             }
 
-            this.gameUI.updateUI(this.applesEaten, 0, this.snake.getSnakeSpeed());
+            this.gameUI.updateUI(this.applesEaten, this.snake.getSnakeSpeed());
         }, this.snake.getSnakeSpeed());
     }
 
@@ -118,7 +110,6 @@ export default class Engine {
             let appleY = apple.getData().fillOptions.y;
         
             if (head.x === appleX && head.y === appleY) {
-                console.log('houve colisao!');
                 this.gameItems.removeItem(apple);
                 this.snake.eat();
                 this.applesEaten++;
