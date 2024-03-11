@@ -15,6 +15,6 @@ export default class StartScreen {
     show() {
         this.PaintBrush.fillBackground(Color.black);
         this.PaintBrush.drawText(Strings.startScreen.title, Color.white, TextType.title, { x: -100, y: -50 });
-        this.PaintBrush.drawText(Strings.startScreen.subTitle, Color.white, TextType.subTitle, { x: -190, y: 50 });
+        this.PaintBrush.drawText(Strings.startScreen.subTitle, Color.white, TextType.subTitle, { x: -155, y: 50 });
     }
 }
