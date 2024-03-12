@@ -1,7 +1,7 @@
 export const Strings = {
     startScreen: {
         title: 'Snake Game',
-        subTitle: 'Press the key [ENTER] to start!',
+        subTitle: 'Press the [ENTER] key to start!',
     },
     ui: {
         items: 'Apple:',
