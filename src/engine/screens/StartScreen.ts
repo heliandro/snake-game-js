@@ -2,7 +2,7 @@ import { Strings } from '../Strings';
 import { Color } from '../enums/Color';
 import { TextType } from '../enums/TextType';
 
-import { PaintBrush } from '../utils';
+import { PaintBrush } from '../utils/utils';
 
 export default class StartScreen {
     

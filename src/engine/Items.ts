@@ -1,5 +1,5 @@
 import Apple from "./Apple";
-import { PaintBrush } from "./utils";
+import { PaintBrush } from "./utils/utils";
 
 export default class Items {
 

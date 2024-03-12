@@ -1,5 +1,5 @@
 import { Strings } from "./Strings";
-import { convertSpeedForUI } from "./utils";
+import { convertSpeedForUI } from "./utils/utils";
 
 export default class GameUI {
     private container: HTMLElement;

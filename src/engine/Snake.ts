@@ -1,32 +1,22 @@
-import { CanvasDimension, CanvasGridSize } from "./config";
-import { Color } from "./enums/Color";
-import { Direction } from "./enums/Direction";
-import { FillOptions, PaintBrush, ScreenPosition } from "./utils";
+import { CanvasGridSize } from "./config";
+import { Direction } from './enums/Direction';
+import { Axis } from "./models/Axis";
 
-interface SnakePart {
-    x: number
-    y: number
+export interface SnakePart extends Axis {
+
 }
 
 export default class Snake {
 
-    private snake: { x: number, y: number }[] = [];
+    private snake: SnakePart[] = [];
     private snakeSize: number = 3;
     private newDirection: Direction = Direction.Left;
     private currentDirection: Direction = Direction.Left;
     private firstPosition = true;
     private snakeSpeed = 300;
-    private paintBrush: PaintBrush;
 
     constructor(readonly context: CanvasRenderingContext2D) {
-        this.paintBrush = new PaintBrush(this.context);
-    }
-
-    public init() {
         this.initializeSnake();
-        this.draw();
-        this.firstPosition = false;
-        this.drawAndMove();
     }
 
     private initializeSnake() {
@@ -35,32 +25,28 @@ export default class Snake {
         }
     }
 
-    private draw() {
-        for (let i = 0; i < this.snake.length; i++) {
-            let fillOptions: FillOptions = {
-                x: ScreenPosition.getX(this.snake[i].x, this.firstPosition),
-                y: ScreenPosition.getY(this.snake[i].y, this.firstPosition),
-                width: CanvasGridSize,
-                height: CanvasGridSize
-            }
-            
-            this.snake[i].x = fillOptions.x;
-            this.snake[i].y = fillOptions.y;
+    public getParts(): SnakePart[] {
+        return [...this.snake];
+    }
 
-            if (i > 0) {
-                this.paintBrush.drawPixel(fillOptions, Color.green);
-            } else {
-                this.paintBrush.drawPixel(fillOptions, Color.yellow);
-            }
-        }
+    public updateParts(snakeParts: SnakePart[]) {
+        this.snake = snakeParts;
+    }
+
+    public getHead(): { x: number, y: number } {
+        return { ...this.snake[0] };
     }
 
     public getSnakeSpeed(): number {
         return this.snakeSpeed;
     }
 
-    public getHead(): { x: number, y: number } {
-        return { ...this.snake[0] };
+    public isFirstPosition(): boolean {
+        return this.firstPosition;
+    }
+
+    public toggleFirstPosition() {
+        this.firstPosition = !this.firstPosition;
     }
 
     public eat() {
@@ -68,90 +54,20 @@ export default class Snake {
         this.snake.push({ x: snakeTail.x * CanvasGridSize, y: CanvasGridSize });
     }
 
+    public getNewDirection(): Direction {
+        return this.newDirection;
+    }
+
     public changeDirection(direction: Direction) {
         this.newDirection = direction;
     }
 
-    public drawAndMove() {
-        let extractedHead = this.getHead();
-
-        switch (this.newDirection) {
-            case Direction.Up:
-                extractedHead = this.checkAndMoveToUp(extractedHead);
-                break;
-            case Direction.Down:
-                extractedHead = this.checkAndMoveToDown(extractedHead);
-                break;
-            case Direction.Left:
-                extractedHead = this.checkAndMoveToLeft(extractedHead);
-                break;
-            case Direction.Right:
-                extractedHead = this.checkAndMoveToRight(extractedHead);
-                break;
-        }
-
-        this.snake.unshift(extractedHead);
-        this.snake.pop();
-        this.checkWallColission();
-        this.draw();
+    public getCurrentDirection(): Direction {
+        return this.currentDirection;
     }
 
-    private checkAndMoveToUp(extractedHead: SnakePart) {
-        if (this.currentDirection === Direction.Down) {
-            extractedHead.y += 1 * CanvasGridSize;
-            this.newDirection = Direction.Down;
-        } else {
-            extractedHead.y -= 1 * CanvasGridSize;
-            this.currentDirection = Direction.Up
-        }
-        return extractedHead;
-    }
-
-    private checkAndMoveToDown(extractedHead: SnakePart) {
-        if (this.currentDirection === Direction.Up) {
-            extractedHead.y -= 1 * CanvasGridSize;
-            this.newDirection = Direction.Up;
-        } else {
-            extractedHead.y += 1 * CanvasGridSize;
-            this.currentDirection = Direction.Down
-        }
-        return extractedHead;
-    }
-
-    private checkAndMoveToLeft(extractedHead: SnakePart) {
-        if (this.currentDirection === Direction.Right) {
-            extractedHead.x += 1 * CanvasGridSize;
-            this.newDirection = Direction.Right;
-        } else {
-            extractedHead.x -= 1 * CanvasGridSize;
-            this.currentDirection = Direction.Left
-        }
-        return extractedHead;
-    }
-
-    private checkAndMoveToRight(extractedHead: SnakePart) {
-        if (this.currentDirection === Direction.Left) {
-            extractedHead.x -= 1 * CanvasGridSize;
-            this.newDirection = Direction.Left;
-        } else {
-            extractedHead.x += 1 * CanvasGridSize;
-            this.currentDirection = Direction.Right
-        }
-        return extractedHead;
-    }
-
-    public checkWallColission() {
-         let head = this.snake[0];
-
-        if (head.x < 0) {
-            head.x = CanvasDimension.width - CanvasGridSize;
-        } else if (head.x >= CanvasDimension.width) {
-            head.x = CanvasGridSize;
-        } else if (head.y < 0) {
-            head.y = CanvasDimension.height - CanvasGridSize;
-        } else if (head.y >= CanvasDimension.height) {
-            head.y = CanvasGridSize;
-        }
+    public setCurrentDirection(direction: Direction) {
+        this.currentDirection = direction;
     }
 
     public increaseSnakeSpeed() {

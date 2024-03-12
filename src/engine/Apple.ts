@@ -1,6 +1,6 @@
 import { CanvasDimension, CanvasGridSize } from "./config";
 import { Color } from "./enums/Color";
-import { FillOptions } from "./utils";
+import { FillOptions } from "./utils/utils";
 
 export default class Apple {
 
@@ -8,7 +8,6 @@ export default class Apple {
     private y: number;
     private width: number;
     private height: number;
-
 
     constructor() {
         this.x = Math.floor(Math.random() * ((CanvasDimension.width) / CanvasGridSize)) * CanvasGridSize;

@@ -1,7 +1,8 @@
-import { CanvasDimension, CanvasGridSize } from "./config";
-import { Color } from "./enums/Color";
-import { TextType } from "./enums/TextType";
-import { Position } from "./models/Position";
+import { CanvasDimension, CanvasGridSize } from "../config";
+import { Color } from "../enums/Color";
+import { TextType } from "../enums/TextType";
+import { Axis } from "../models/Axis";
+import { Position } from "../models/Position";
 
 export class ScreenPosition {
 
@@ -75,4 +76,24 @@ export function convertSpeedForUI(speed: number) {
     } else if (speed >= 0) {
         return 7
     }
+}
+
+export function updateAxisToUp(axis: Axis): Axis {
+    axis.y -= 1 * CanvasGridSize;
+    return axis;
+}
+
+export function updateAxisToDown(axis: Axis): Axis {
+    axis.y += 1 * CanvasGridSize;
+    return axis;
+}
+
+export function updateAxisToLeft(axis: Axis): Axis {
+    axis.x -= 1 * CanvasGridSize;
+    return axis;
+}
+
+export function updateAxisToRight(axis: Axis): Axis {
+    axis.x += 1 * CanvasGridSize;
+    return axis;
 }
